@@ -1,5 +1,8 @@
 <% layout('layouts/boilerplate') %>
 <h1><%= journal.title %></h1>
+<h2><%= journal.date %></h2>
+<img src="<%= journal.image %>" alt="">
+<p><%= journal.text %> </p>
 <p><a href="/journals/<%= journal._id %>/edit" >Edit</a></p>
 <p>
   <form action="/journals/<%= journal._id %>?_method=DELETE" method="POST" >
