@@ -1,26 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>New Journal</title>
-  </head>
-  <body>
-    <form action="/journals" method="POST">
-      <div>
-        <label for="title">Title</label>
-        <input type="text" id="title" name="journal[title]" />
-      </div>
-      <div>
-        <label for="location">Location</label>
-        <input type="text" id="location" name="journal[location]" />
-      </div>
-      <div>
-        <label for="text">Text</label>
-        <textarea name="journal[text]" id="text" cols="30" rows="10"></textarea>
-      </div>
-      <button>Post Journal</button>
-    </form>
-    <a href="/journals">All Journals</a>
-  </body>
-</html>
+<% layout('layouts/boilerplate') %>
+<form action="/journals" method="POST">
+  <div>
+    <label for="title">Title</label>
+    <input type="text" id="title" name="journal[title]" />
+  </div>
+  <div>
+    <label for="location">Location</label>
+    <input type="text" id="location" name="journal[location]" />
+  </div>
+  <div>
+    <label for="text">Text</label>
+    <textarea name="journal[text]" id="text" cols="30" rows="10"></textarea>
+  </div>
+  <button>Post Journal</button>
+</form>
+<a href="/journals">All Journals</a>
