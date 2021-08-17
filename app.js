@@ -58,6 +58,12 @@ app.put("/journals/:id", async (req, res) => {
   res.redirect(`/journals/${journal._id}`);
 });
 
+app.delete("/journals/:id", async (req, res) => {
+  const { id } = req.params;
+  await Journal.findByIdAndDelete(id);
+  res.redirect("/journals");
+});
+
 app.listen(3000, () => {
   console.log("Serving on port 3000");
 });

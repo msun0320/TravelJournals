@@ -8,6 +8,11 @@
   <body>
     <h1><%= journal.title %></h1>
     <p><a href="/journals/<%= journal._id %>/edit ">Edit</a></p>
+    <p>
+      <form action="/journals/<%= journal._id %>?_method=DELETE" method="POST" >
+        <button>Delete</button>
+      </form>
+    </p>
     <footer>
       <a href="/journals">All Journals</a>
     </footer>
