@@ -9,7 +9,7 @@
     <h1>All journals!</h1>
     <ul>
       <% for (let journal of journals) {%>
-      <li><%= journal.title %></li>
+      <li><a href="/journals/<%=journal._id %> "><%= journal.title %></a></li>
       <% }%>
     </ul>
   </body>

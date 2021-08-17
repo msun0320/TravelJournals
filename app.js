@@ -29,6 +29,11 @@ app.get("/journals", async (req, res) => {
   res.render("journals/index", { journals });
 });
 
+app.get("/journals/:id", async (req, res) => {
+  const journal = await Journal.findById(req.params.id);
+  res.render("journals/show", { journal });
+});
+
 app.listen(3000, () => {
   console.log("Serving on port 3000");
 });
