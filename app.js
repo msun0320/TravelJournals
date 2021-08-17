@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const methodOverride = require("method-override");
 const Journal = require("./models/journal");
 
 mongoose.connect("mongodb://localhost:27017/travel-journal", {
@@ -20,6 +21,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -43,6 +45,17 @@ app.post("/journals", async (req, res) => {
 app.get("/journals/:id", async (req, res) => {
   const journal = await Journal.findById(req.params.id);
   res.render("journals/show", { journal });
+});
+
+app.get("/journals/:id/edit", async (req, res) => {
+  const journal = await Journal.findById(req.params.id);
+  res.render("journals/edit", { journal });
+});
+
+app.put("/journals/:id", async (req, res) => {
+  const { id } = req.params;
+  const journal = await Journal.findByIdAndUpdate(id, { ...req.body.journal });
+  res.redirect(`/journals/${journal._id}`);
 });
 
 app.listen(3000, () => {
