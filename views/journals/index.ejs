@@ -7,6 +7,9 @@
   </head>
   <body>
     <h1>All journals!</h1>
+    <div>
+      <a href="/journals/new">Add Journal</a>
+    </div>
     <ul>
       <% for (let journal of journals) {%>
       <li><a href="/journals/<%=journal._id %> "><%= journal.title %></a></li>

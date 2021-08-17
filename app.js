@@ -19,6 +19,7 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -27,6 +28,16 @@ app.get("/", (req, res) => {
 app.get("/journals", async (req, res) => {
   const journals = await Journal.find({});
   res.render("journals/index", { journals });
+});
+
+app.get("/journals/new", (req, res) => {
+  res.render("journals/new");
+});
+
+app.post("/journals", async (req, res) => {
+  const journal = new Journal(req.body.journal);
+  await journal.save();
+  res.redirect(`/journals/${journal._id}`);
 });
 
 app.get("/journals/:id", async (req, res) => {
