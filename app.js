@@ -20,14 +20,13 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.get("/writejournal", async (req, res) => {
-  const journal = new Journal({ title: "First Journal", text: "Had fun!" });
-  await journal.save();
-  res.send(journal);
-});
-
 app.get("/", (req, res) => {
   res.render("home");
+});
+
+app.get("/journals", async (req, res) => {
+  const journals = await Journal.find({});
+  res.render("journals/index", { journals });
 });
 
 app.listen(3000, () => {
