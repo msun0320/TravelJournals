@@ -2,7 +2,12 @@
 <div class="row">
   <h1 class="text-center">Edit Journal</h1>
   <div class="col-6 offset-3">
-    <form action="/journals/<%= journal._id %>?_method=PUT" method="POST">
+    <form
+      action="/journals/<%= journal._id %>?_method=PUT"
+      method="POST"
+      novalidate
+      class="validated-form"
+    >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -11,7 +16,9 @@
           id="title"
           name="journal[title]"
           value="<%= journal.title %> "
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
@@ -21,7 +28,9 @@
           id="location"
           name="journal[location]"
           value="<%= journal.location %> "
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="date">Date</label>
@@ -31,7 +40,9 @@
           id="date"
           name="journal[date]"
           value="<%= journal.date %> "
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="image">Image Url</label>
@@ -41,7 +52,9 @@
           id="image"
           name="journal[image]"
           value="<%= journal.image %> "
+          required
         />
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="text">Text</label>
@@ -51,9 +64,11 @@
           id="text"
           cols="30"
           rows="10"
+          required
         >
 <%= journal.text %> </textarea
         >
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3 form-check form-switch">
         <input
