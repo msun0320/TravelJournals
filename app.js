@@ -38,10 +38,14 @@ app.get("/journals/new", (req, res) => {
   res.render("journals/new");
 });
 
-app.post("/journals", async (req, res) => {
-  const journal = new Journal(req.body.journal);
-  await journal.save();
-  res.redirect(`/journals/${journal._id}`);
+app.post("/journals", async (req, res, next) => {
+  try {
+    const journal = new Journal(req.body.journal);
+    await journal.save();
+    res.redirect(`/journals/${journal._id}`);
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.get("/journals/:id", async (req, res) => {
@@ -64,6 +68,10 @@ app.delete("/journals/:id", async (req, res) => {
   const { id } = req.params;
   await Journal.findByIdAndDelete(id);
   res.redirect("/journals");
+});
+
+app.use((err, req, res, next) => {
+  res.send("Something went wrong!");
 });
 
 app.listen(3000, () => {
