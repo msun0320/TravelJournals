@@ -125,6 +125,16 @@ app.post(
   })
 );
 
+app.delete(
+  "/journals/:id/comments/:commentId",
+  catchAsync(async (req, res) => {
+    const { id, commentId } = req.params;
+    await Journal.findByIdAndUpdate(id, { $pull: { comments: commentId } });
+    await Comment.findByIdAndDelete(commentId);
+    res.redirect(`/journals/${id}`);
+  })
+);
+
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 404));
 });
