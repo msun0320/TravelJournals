@@ -7,7 +7,7 @@ const JournalSchema = new Schema({
   location: String,
   date: Date,
   text: String,
-  private: Boolean,
+  public: Boolean,
 });
 
 module.exports = mongoose.model("Journal", JournalSchema);
