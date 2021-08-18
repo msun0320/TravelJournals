@@ -1,13 +1,29 @@
 <% layout('layouts/boilerplate') %>
-<img src="<%= journal.image %>" class="img-fluid" alt="" />
-<h1 class="mt-5"><%= journal.title %></h1>
-<p><small><%= journal.date %></small></p>
-<p class="mt-5"><%= journal.text %></p>
-<a class="btn btn-primary" href="/journals/<%= journal._id %>/edit">Edit</a>
-<form
-  class="d-inline"
-  action="/journals/<%= journal._id %>?_method=DELETE"
-  method="POST"
->
-  <button class="btn btn-danger">Delete</button>
+<div class="mb-3">
+  <img src="<%= journal.image %>" class="img-fluid" alt="" />
+  <h1 class="mt-5"><%= journal.title %></h1>
+  <p><small><%= journal.date %></small></p>
+  <p class="mt-5"><%= journal.text %></p>
+  <a class="btn btn-primary" href="/journals/<%= journal._id %>/edit">Edit</a>
+  <form
+    class="d-inline"
+    action="/journals/<%= journal._id %>?_method=DELETE"
+    method="POST"
+  >
+    <button class="btn btn-danger">Delete</button>
+  </form>
+</div>
+<h2>Leave a Comment</h2>
+<form action="">
+  <div class="mb-3">
+    <label class="form-label" for="body">Comment</label>
+    <textarea
+      class="form-control"
+      name="comment[body]"
+      id="body"
+      cols="30"
+      rows="3"
+    ></textarea>
+  </div>
+  <button class="btn btn-success">Submit</button>
 </form>
