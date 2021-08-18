@@ -7,6 +7,7 @@ const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
 const Journal = require("./models/journal");
+const Comment = require("./models/comment");
 
 mongoose.connect("mongodb://localhost:27017/travel-journal", {
   useNewUrlParser: true,
@@ -99,6 +100,18 @@ app.delete(
     const { id } = req.params;
     await Journal.findByIdAndDelete(id);
     res.redirect("/journals");
+  })
+);
+
+app.post(
+  "/journals/:id/comments",
+  catchAsync(async (req, res) => {
+    const journal = await Journal.findById(req.params.id);
+    const comment = new Comment(req.body.comment);
+    journal.comments.push(comment);
+    await comment.save();
+    await journal.save();
+    res.redirect(`/journals/${journal._id}`);
   })
 );
 
