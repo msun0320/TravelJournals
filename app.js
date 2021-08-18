@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
-const Joi = require("joi");
+const { journalSchema } = require("./schemas.js");
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
@@ -28,6 +28,16 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+const validateJournal = (req, res, next) => {
+  const { error } = journalSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -46,24 +56,9 @@ app.get("/journals/new", (req, res) => {
 
 app.post(
   "/journals",
+  validateJournal,
   catchAsync(async (req, res, next) => {
     // if (!req.body.journal) throw new ExpressError("Invalid journal data", 400);
-    const journalSchema = Joi.object({
-      journal: Joi.object({
-        title: Joi.string().required(),
-        image: Joi.string().required(),
-        location: Joi.string().required(),
-        date: Joi.date().required(),
-        text: Joi.string().required(),
-        public: Joi.boolean(),
-      }).required(),
-    });
-    const { error } = journalSchema.validate(req.body);
-    if (error) {
-      const msg = error.details.map((el) => el.message).join(",");
-      throw new ExpressError(msg, 400);
-    }
-    console.log(error);
     const journal = new Journal(req.body.journal);
     await journal.save();
     res.redirect(`/journals/${journal._id}`);
@@ -88,6 +83,7 @@ app.get(
 
 app.put(
   "/journals/:id",
+  validateJournal,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const journal = await Journal.findByIdAndUpdate(id, {
