@@ -10,3 +10,9 @@ module.exports.journalSchema = Joi.object({
     public: Joi.boolean(),
   }).required(),
 });
+
+module.exports.commentSchema = Joi.object({
+  comment: Joi.object({
+    body: Joi.string().required(),
+  }).required(),
+});

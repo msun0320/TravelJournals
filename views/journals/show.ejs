@@ -14,8 +14,13 @@
   </form>
 </div>
 <h2>Leave a Comment</h2>
-<form action="/journals/<%= journal._id %>/comments" method="POST">
-  <div class="mb-3">
+<form
+  action="/journals/<%= journal._id %>/comments"
+  method="POST"
+  class="mb-3 validated-form"
+  novalidate
+>
+  <div>
     <label class="form-label" for="body">Comment</label>
     <textarea
       class="form-control"
@@ -23,7 +28,9 @@
       id="body"
       cols="30"
       rows="3"
+      required
     ></textarea>
+    <div class="valid-feedback">Looks good!</div>
   </div>
   <button class="btn btn-success">Submit</button>
 </form>

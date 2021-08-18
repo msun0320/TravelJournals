@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
-const { journalSchema } = require("./schemas.js");
+const { journalSchema, commentSchema } = require("./schemas.js");
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
@@ -31,6 +31,15 @@ app.use(methodOverride("_method"));
 
 const validateJournal = (req, res, next) => {
   const { error } = journalSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+const validateComment = (req, res, next) => {
+  const { error } = commentSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(msg, 400);
@@ -105,6 +114,7 @@ app.delete(
 
 app.post(
   "/journals/:id/comments",
+  validateComment,
   catchAsync(async (req, res) => {
     const journal = await Journal.findById(req.params.id);
     const comment = new Comment(req.body.comment);
