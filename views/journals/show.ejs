@@ -35,7 +35,10 @@
   <button class="btn btn-success">Submit</button>
 </form>
 <% for (let comment of journal.comments) { %>
-<div class="mb-3">
-  <p>Comment: <%= comment.body %></p>
+<div class="mb-3 card">
+  <div class="card-body">
+    <h5 class="card-title"><%= journal.title %></h5>
+    <p class="card-text"><%= comment.body %></p>
+  </div>
 </div>
 <% } %>
