@@ -78,7 +78,7 @@ app.post(
 app.get(
   "/journals/:id",
   catchAsync(async (req, res) => {
-    const journal = await Journal.findById(req.params.id);
+    const journal = await Journal.findById(req.params.id).populate("comments");
     res.render("journals/show", { journal });
   })
 );
