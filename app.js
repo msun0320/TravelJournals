@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
+const catchAsync = require("./utils/catchAsync");
 const methodOverride = require("method-override");
 const Journal = require("./models/journal");
 
@@ -29,46 +30,62 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/journals", async (req, res) => {
-  const journals = await Journal.find({});
-  res.render("journals/index", { journals });
-});
+app.get(
+  "/journals",
+  catchAsync(async (req, res) => {
+    const journals = await Journal.find({});
+    res.render("journals/index", { journals });
+  })
+);
 
 app.get("/journals/new", (req, res) => {
   res.render("journals/new");
 });
 
-app.post("/journals", async (req, res, next) => {
-  try {
+app.post(
+  "/journals",
+  catchAsync(async (req, res, next) => {
     const journal = new Journal(req.body.journal);
     await journal.save();
     res.redirect(`/journals/${journal._id}`);
-  } catch (e) {
-    next(e);
-  }
-});
+  })
+);
 
-app.get("/journals/:id", async (req, res) => {
-  const journal = await Journal.findById(req.params.id);
-  res.render("journals/show", { journal });
-});
+app.get(
+  "/journals/:id",
+  catchAsync(async (req, res) => {
+    const journal = await Journal.findById(req.params.id);
+    res.render("journals/show", { journal });
+  })
+);
 
-app.get("/journals/:id/edit", async (req, res) => {
-  const journal = await Journal.findById(req.params.id);
-  res.render("journals/edit", { journal });
-});
+app.get(
+  "/journals/:id/edit",
+  catchAsync(async (req, res) => {
+    const journal = await Journal.findById(req.params.id);
+    res.render("journals/edit", { journal });
+  })
+);
 
-app.put("/journals/:id", async (req, res) => {
-  const { id } = req.params;
-  const journal = await Journal.findByIdAndUpdate(id, { ...req.body.journal });
-  res.redirect(`/journals/${journal._id}`);
-});
+app.put(
+  "/journals/:id",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const journal = await Journal.findByIdAndUpdate(id, {
+      ...req.body.journal,
+    });
+    res.redirect(`/journals/${journal._id}`);
+  })
+);
 
-app.delete("/journals/:id", async (req, res) => {
-  const { id } = req.params;
-  await Journal.findByIdAndDelete(id);
-  res.redirect("/journals");
-});
+app.delete(
+  "/journals/:id",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    await Journal.findByIdAndDelete(id);
+    res.redirect("/journals");
+  })
+);
 
 app.use((err, req, res, next) => {
   res.send("Something went wrong!");
