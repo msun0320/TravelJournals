@@ -1,30 +1,75 @@
 <% layout('layouts/boilerplate') %>
-<h1>Edit Journal</h1>
-<form action="/journals/<%= journal._id %>?_method=PUT" method="POST">
-  <div>
-    <label for="title">Title</label>
-    <input
-      type="text"
-      id="title"
-      name="journal[title]"
-      value="<%= journal.title %> "
-    />
+<div class="row">
+  <h1 class="text-center">Edit Journal</h1>
+  <div class="col-6 offset-3">
+    <form action="/journals/<%= journal._id %>?_method=PUT" method="POST">
+      <div class="mb-3">
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="journal[title]"
+          value="<%= journal.title %> "
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="location">Location</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="journal[location]"
+          value="<%= journal.location %> "
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="date">Date</label>
+        <input
+          class="form-control"
+          type="date"
+          id="date"
+          name="journal[date]"
+          value="<%= journal.date %> "
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="image">Image Url</label>
+        <input
+          class="form-control"
+          type="text"
+          id="image"
+          name="journal[image]"
+          value="<%= journal.image %> "
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="text">Text</label>
+        <textarea
+          class="form-control"
+          name="journal[text]"
+          id="text"
+          cols="30"
+          rows="10"
+        >
+<%= journal.text %> </textarea
+        >
+      </div>
+      <div class="mb-3 form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="public"
+          name="journal[public]"
+          value="true"
+          checked
+        />
+        <label class="form-check-label" for="public">Make Public</label>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-info">Update Journal</button>
+      </div>
+    </form>
+    <a href="/journals/<%= journal._id %> ">Back to Journal</a>
   </div>
-  <div>
-    <label for="location">Location</label>
-    <input
-      type="text"
-      id="location"
-      name="journal[location]"
-      value="<%= journal.location %>"
-    />
-  </div>
-  <div>
-    <label for="text">Text</label>
-    <textarea name="journal[text]" id="text" cols="30" rows="10">
-<%= journal.text %></textarea
-    >
-  </div>
-  <button>Post Journal</button>
-</form>
-<a href="/journals/<%= journal._id %> ">Back to Journal</a>
+</div>
