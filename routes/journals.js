@@ -43,6 +43,10 @@ router.get(
   "/:id",
   catchAsync(async (req, res) => {
     const journal = await Journal.findById(req.params.id).populate("comments");
+    if (!journal) {
+      req.flash("error", "Cannot find that journal");
+      return res.redirect("/journals");
+    }
     res.render("journals/show", { journal });
   })
 );
@@ -51,6 +55,10 @@ router.get(
   "/:id/edit",
   catchAsync(async (req, res) => {
     const journal = await Journal.findById(req.params.id);
+    if (!journal) {
+      req.flash("error", "Cannot find that journal");
+      return res.redirect("/journals");
+    }
     res.render("journals/edit", { journal });
   })
 );
