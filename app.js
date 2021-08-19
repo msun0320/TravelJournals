@@ -9,6 +9,8 @@ const methodOverride = require("method-override");
 const Journal = require("./models/journal");
 const Comment = require("./models/comment");
 
+const journals = require("./routes/journals");
+
 mongoose.connect("mongodb://localhost:27017/travel-journal", {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -48,69 +50,11 @@ const validateComment = (req, res, next) => {
   }
 };
 
+app.use("/journals", journals);
+
 app.get("/", (req, res) => {
   res.render("home");
 });
-
-app.get(
-  "/journals",
-  catchAsync(async (req, res) => {
-    const journals = await Journal.find({});
-    res.render("journals/index", { journals });
-  })
-);
-
-app.get("/journals/new", (req, res) => {
-  res.render("journals/new");
-});
-
-app.post(
-  "/journals",
-  validateJournal,
-  catchAsync(async (req, res, next) => {
-    // if (!req.body.journal) throw new ExpressError("Invalid journal data", 400);
-    const journal = new Journal(req.body.journal);
-    await journal.save();
-    res.redirect(`/journals/${journal._id}`);
-  })
-);
-
-app.get(
-  "/journals/:id",
-  catchAsync(async (req, res) => {
-    const journal = await Journal.findById(req.params.id).populate("comments");
-    res.render("journals/show", { journal });
-  })
-);
-
-app.get(
-  "/journals/:id/edit",
-  catchAsync(async (req, res) => {
-    const journal = await Journal.findById(req.params.id);
-    res.render("journals/edit", { journal });
-  })
-);
-
-app.put(
-  "/journals/:id",
-  validateJournal,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const journal = await Journal.findByIdAndUpdate(id, {
-      ...req.body.journal,
-    });
-    res.redirect(`/journals/${journal._id}`);
-  })
-);
-
-app.delete(
-  "/journals/:id",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Journal.findByIdAndDelete(id);
-    res.redirect("/journals");
-  })
-);
 
 app.post(
   "/journals/:id/comments",
