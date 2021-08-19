@@ -10,8 +10,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 
-const journals = require("./routes/journals");
-const comments = require("./routes/comments");
+const userRoutes = require("./routes/users");
+const journalRoutes = require("./routes/journals");
+const commentRoutes = require("./routes/comments");
 
 mongoose.connect("mongodb://localhost:27017/travel-journal", {
   useNewUrlParser: true,
@@ -68,8 +69,9 @@ app.get("/fakeUser", async (req, res) => {
   res.send(newUser);
 });
 
-app.use("/journals", journals);
-app.use("/journals/:id/comments", comments);
+app.use("/", userRoutes);
+app.use("/journals", journalRoutes);
+app.use("/journals/:id/comments", commentRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");
