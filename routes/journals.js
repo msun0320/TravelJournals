@@ -63,6 +63,7 @@ router.put(
     const journal = await Journal.findByIdAndUpdate(id, {
       ...req.body.journal,
     });
+    req.flash("success", "Successfully updated journal");
     res.redirect(`/journals/${journal._id}`);
   })
 );
@@ -72,6 +73,7 @@ router.delete(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Journal.findByIdAndDelete(id);
+    req.flash("success", "Successfully deleted journal");
     res.redirect("/journals");
   })
 );
