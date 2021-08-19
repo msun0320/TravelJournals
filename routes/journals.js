@@ -34,6 +34,7 @@ router.post(
     // if (!req.body.journal) throw new ExpressError("Invalid journal data", 400);
     const journal = new Journal(req.body.journal);
     await journal.save();
+    req.flash("success", "Successfully added a new journal");
     res.redirect(`/journals/${journal._id}`);
   })
 );
