@@ -44,7 +44,6 @@ router.post(
 
 router.get(
   "/:id",
-  isLoggedIn,
   catchAsync(async (req, res) => {
     const journal = await Journal.findById(req.params.id).populate("comments");
     if (!journal) {
