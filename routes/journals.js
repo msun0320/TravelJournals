@@ -27,6 +27,7 @@ router
   .put(
     isLoggedIn,
     isAuthor,
+    upload.array("image"),
     validateJournal,
     catchAsync(journals.updateJournal)
   )

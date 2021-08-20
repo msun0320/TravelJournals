@@ -52,6 +52,12 @@ module.exports.updateJournal = async (req, res) => {
   const journal = await Journal.findByIdAndUpdate(id, {
     ...req.body.journal,
   });
+  const imgs = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
+  journal.images.push(...imgs);
+  await journal.save();
   req.flash("success", "Successfully updated journal");
   res.redirect(`/journals/${journal._id}`);
 };
