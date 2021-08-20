@@ -26,6 +26,10 @@ const seedDB = async () => {
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sed dictum justo. Cras facilisis diam sed justo condimentum dignissim. Vivamus ac ligula tempor, varius eros at, placerat lectus. Mauris blandit aliquam tincidunt. Ut scelerisque dignissim magna eu congue. Donec velit dui, faucibus et ipsum eget, ornare venenatis ligula. Etiam tincidunt ultrices mauris in varius. Quisque fermentum laoreet leo interdum tincidunt. Duis dictum lacus eget turpis condimentum dictum. Ut luctus facilisis metus, a scelerisque ipsum mollis et. Fusce tincidunt sollicitudin dignissim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer elementum metus sed rutrum vulputate.",
       public: true,
+      geometry: {
+        type: "Point",
+        coordinates: [-117.1628, 32.7174],
+      },
       images: [
         {
           url:
