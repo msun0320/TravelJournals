@@ -9,6 +9,7 @@ module.exports.journalSchema = Joi.object({
     text: Joi.string().required(),
     public: Joi.boolean(),
   }).required(),
+  deleteImages: Joi.array(),
 });
 
 module.exports.commentSchema = Joi.object({

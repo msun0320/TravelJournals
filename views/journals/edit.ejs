@@ -85,6 +85,20 @@
         <label class="form-check-label" for="public">Make Public</label>
       </div>
       <div class="mb-3">
+        <% journal.images.forEach((img, i) => { %>
+        <img src="<%= img.url %>" class="img-thumbnail" alt="" />
+        <div class="form-check-inline">
+          <input
+            type="checkbox"
+            id="img-<%= i %>"
+            name="deleteImages[]"
+            value="<%= img.filename %>"
+          />
+        </div>
+        <label for="img-<%= i %>">Delete?</label>
+        <% }) %>
+      </div>
+      <div class="mb-3">
         <button class="btn btn-info">Update Journal</button>
       </div>
     </form>
