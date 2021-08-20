@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const { validateComment, isLoggedIn } = require("../middleware");
+const {
+  validateComment,
+  isLoggedIn,
+  isReviewAuthor,
+} = require("../middleware");
 const Journal = require("../models/journal");
 const Comment = require("../models/comment");
 
@@ -25,6 +29,8 @@ router.post(
 
 router.delete(
   "/:commentId",
+  isLoggedIn,
+  isReviewAuthor,
   catchAsync(async (req, res) => {
     const { id, commentId } = req.params;
     await Journal.findByIdAndUpdate(id, { $pull: { comments: commentId } });

@@ -1,6 +1,7 @@
 const { journalSchema, commentSchema } = require("./schemas.js");
 const ExpressError = require("./utils/ExpressError");
 const Journal = require("./models/journal");
+const Comment = require("./models/comment");
 
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -25,6 +26,16 @@ module.exports.isAuthor = async (req, res, next) => {
   const { id } = req.params;
   const journal = await Journal.findById(id);
   if (!journal.author.equals(req.user._id)) {
+    req.flash("error", "You do not have permission to do that!");
+    return res.redirect(`/journals/${id}`);
+  }
+  next();
+};
+
+module.exports.isReviewAuthor = async (req, res, next) => {
+  const { id, commentId } = req.params;
+  const comment = await Comment.findById(commentId);
+  if (!comment.author.equals(req.user._id)) {
     req.flash("error", "You do not have permission to do that!");
     return res.redirect(`/journals/${id}`);
   }

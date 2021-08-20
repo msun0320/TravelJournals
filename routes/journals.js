@@ -35,7 +35,12 @@ router.get(
   "/:id",
   catchAsync(async (req, res) => {
     const journal = await await Journal.findById(req.params.id)
-      .populate("comments")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+        },
+      })
       .populate("author");
     if (!journal) {
       req.flash("error", "Cannot find that journal");
