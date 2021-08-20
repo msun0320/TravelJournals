@@ -1,21 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
-const { journalSchema } = require("../schemas.js");
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn, isAuthor, validateJournal } = require("../middleware");
 
 const ExpressError = require("../utils/ExpressError");
 const Journal = require("../models/journal");
-
-const validateJournal = (req, res, next) => {
-  const { error } = journalSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
 
 router.get(
   "/",
@@ -59,16 +48,13 @@ router.get(
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isAuthor,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const journal = await Journal.findById(id);
     if (!journal) {
       req.flash("error", "Cannot find that journal");
       return res.redirect("/journals");
-    }
-    if (!journal.author.equals(req.user._id)) {
-      req.flash("error", "You do not have permission to do that!");
-      return res.redirect(`/journals/${id}`);
     }
     res.render("journals/edit", { journal });
   })
@@ -77,15 +63,11 @@ router.get(
 router.put(
   "/:id",
   isLoggedIn,
+  isAuthor,
   validateJournal,
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const journal = await Journal.findById(id);
-    if (!journal.author.equals(req.user._id)) {
-      req.flash("error", "You do not have permission to do that!");
-      return res.redirect(`/journals/${id}`);
-    }
-    const jour = await Journal.findByIdAndUpdate(id, {
+    const journal = await Journal.findByIdAndUpdate(id, {
       ...req.body.journal,
     });
     req.flash("success", "Successfully updated journal");
@@ -96,6 +78,7 @@ router.put(
 router.delete(
   "/:id",
   isLoggedIn,
+  isAuthor,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Journal.findByIdAndDelete(id);
