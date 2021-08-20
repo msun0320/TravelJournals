@@ -36,13 +36,8 @@ const seedDB = async () => {
       images: [
         {
           url:
-            "https://res.cloudinary.com/dxcl5mpau/image/upload/v1629462463/TravelJournals/k0lmajp57h0weihfqxkk.jpg",
+            "https://res.cloudinary.com/dxcl5mpau/image/upload/v1629455755/sample.jpg",
           filename: "TravelJournals/k0lmajp57h0weihfqxkk",
-        },
-        {
-          url:
-            "https://res.cloudinary.com/dxcl5mpau/image/upload/v1629462463/TravelJournals/uv7xn08rklklxotswxcn.jpg",
-          filename: "TravelJournals/uv7xn08rklklxotswxcn",
         },
       ],
     });
