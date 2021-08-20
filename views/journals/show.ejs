@@ -16,6 +16,7 @@
   </form>
   <% } %>
 </div>
+<% if (currentUser) { %>
 <h2>Leave a Comment</h2>
 <form
   action="/journals/<%= journal._id %>/comments"
@@ -37,7 +38,7 @@
   </div>
   <button class="btn btn-success">Submit</button>
 </form>
-<% for (let comment of journal.comments) { %>
+<% } %> <% for (let comment of journal.comments) { %>
 <div class="mb-3 card">
   <div class="card-body">
     <h5 class="card-title"><%= journal.title %></h5>
