@@ -1,4 +1,7 @@
 const Journal = require("../models/journal");
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
@@ -11,15 +14,23 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createJournal = async (req, res, next) => {
-  const journal = new Journal(req.body.journal);
-  journal.images = req.files.map((f) => ({
-    url: f.path,
-    filename: f.filename,
-  }));
-  journal.author = req.user._id;
-  await journal.save();
-  req.flash("success", "Successfully added a new journal");
-  res.redirect(`/journals/${journal._id}`);
+  const geoData = await geocoder
+    .forwardGeocode({
+      query: req.body.journal.location,
+      limit: 1,
+    })
+    .send();
+  console.log(geoData.body.features[0].geometry.coordinates);
+  res.send("ok");
+  // const journal = new Journal(req.body.journal);
+  // journal.images = req.files.map((f) => ({
+  //   url: f.path,
+  //   filename: f.filename,
+  // }));
+  // journal.author = req.user._id;
+  // await journal.save();
+  // req.flash("success", "Successfully added a new journal");
+  // res.redirect(`/journals/${journal._id}`);
 };
 
 module.exports.showJournal = async (req, res) => {
