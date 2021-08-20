@@ -2,6 +2,7 @@
 <div class="mb-3">
   <img src="<%= journal.image %>" class="img-fluid" alt="" />
   <h1 class="mt-5"><%= journal.title %></h1>
+  <p><small><%= journal.author.username %></small></p>
   <p><small><%= journal.date %></small></p>
   <p class="mt-5"><%= journal.text %></p>
   <a class="btn btn-primary" href="/journals/<%= journal._id %>/edit">Edit</a>

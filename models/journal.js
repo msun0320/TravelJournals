@@ -9,6 +9,10 @@ const JournalSchema = new Schema({
   date: Date,
   text: String,
   public: Boolean,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   comments: [
     {
       type: Schema.Types.ObjectId,

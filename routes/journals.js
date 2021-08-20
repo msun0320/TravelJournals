@@ -34,8 +34,8 @@ router.post(
   isLoggedIn,
   validateJournal,
   catchAsync(async (req, res, next) => {
-    // if (!req.body.journal) throw new ExpressError("Invalid journal data", 400);
     const journal = new Journal(req.body.journal);
+    journal.author = req.user._id;
     await journal.save();
     req.flash("success", "Successfully added a new journal");
     res.redirect(`/journals/${journal._id}`);
@@ -45,7 +45,9 @@ router.post(
 router.get(
   "/:id",
   catchAsync(async (req, res) => {
-    const journal = await Journal.findById(req.params.id).populate("comments");
+    const journal = await await Journal.findById(req.params.id)
+      .populate("comments")
+      .populate("author");
     if (!journal) {
       req.flash("error", "Cannot find that journal");
       return res.redirect("/journals");
