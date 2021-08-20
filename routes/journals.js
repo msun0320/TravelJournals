@@ -4,22 +4,25 @@ const journals = require("../controllers/journals");
 const catchAsync = require("../utils/catchAsync");
 const { isLoggedIn, isAuthor, validateJournal } = require("../middleware");
 
-const ExpressError = require("../utils/ExpressError");
 const Journal = require("../models/journal");
-const { editJournalForm } = require("../controllers/journals");
 
-router.get("/", catchAsync(journals.index));
+router
+  .route("/")
+  .get(catchAsync(journals.index))
+  .post(isLoggedIn, validateJournal, catchAsync(journals.createJournal));
 
 router.get("/new", isLoggedIn, journals.renderNewForm);
 
-router.post(
-  "/",
-  isLoggedIn,
-  validateJournal,
-  catchAsync(journals.createJournal)
-);
-
-router.get("/:id", catchAsync(journals.showJournal));
+router
+  .route("/:id")
+  .get(catchAsync(journals.showJournal))
+  .put(
+    isLoggedIn,
+    isAuthor,
+    validateJournal,
+    catchAsync(journals.updateJournal)
+  )
+  .delete(isLoggedIn, isAuthor, catchAsync(journals.deleteJournal));
 
 router.get(
   "/:id/edit",
@@ -27,15 +30,5 @@ router.get(
   isAuthor,
   catchAsync(journals.renderEditForm)
 );
-
-router.put(
-  "/:id",
-  isLoggedIn,
-  isAuthor,
-  validateJournal,
-  catchAsync(journals.updateJournal)
-);
-
-router.delete("/:id", isLoggedIn, isAuthor, catchAsync(journals.deleteJournal));
 
 module.exports = router;
