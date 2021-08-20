@@ -10,34 +10,48 @@ const ImageSchema = new Schema({
 ImageSchema.virtual("thumbnail").get(function () {
   return this.url.replace("/upload", "/upload/w_200");
 });
-const JournalSchema = new Schema({
-  title: String,
-  images: [ImageSchema],
-  geometry: {
-    type: {
-      type: String,
-      enums: ["Point"],
-      required: true,
+
+const opts = { toJSON: { virtuals: true } };
+
+const JournalSchema = new Schema(
+  {
+    title: String,
+    images: [ImageSchema],
+    geometry: {
+      type: {
+        type: String,
+        enums: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
     },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
-  },
-  location: String,
-  date: Date,
-  text: String,
-  public: Boolean,
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-  comments: [
-    {
+    location: String,
+    date: Date,
+    text: String,
+    public: Boolean,
+    author: {
       type: Schema.Types.ObjectId,
-      ref: "Comment",
+      ref: "User",
     },
-  ],
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+  },
+  opts
+);
+
+JournalSchema.virtual("properties.popUpMarkup").get(function () {
+  return `
+  <strong><a href="/journals/${
+    this._id
+  }">${this.title.substring(0, 20)}...</a></strong>
+  <p>${this.location}</p>`;
 });
 
 JournalSchema.post("findOneAndDelete", async function (doc) {
