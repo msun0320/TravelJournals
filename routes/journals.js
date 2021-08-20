@@ -60,10 +60,15 @@ router.get(
   "/:id/edit",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const journal = await Journal.findById(req.params.id);
+    const { id } = req.params;
+    const journal = await Journal.findById(id);
     if (!journal) {
       req.flash("error", "Cannot find that journal");
       return res.redirect("/journals");
+    }
+    if (!journal.author.equals(req.user._id)) {
+      req.flash("error", "You do not have permission to do that!");
+      return res.redirect(`/journals/${id}`);
     }
     res.render("journals/edit", { journal });
   })
@@ -75,7 +80,12 @@ router.put(
   validateJournal,
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const journal = await Journal.findByIdAndUpdate(id, {
+    const journal = await Journal.findById(id);
+    if (!journal.author.equals(req.user._id)) {
+      req.flash("error", "You do not have permission to do that!");
+      return res.redirect(`/journals/${id}`);
+    }
+    const jour = await Journal.findByIdAndUpdate(id, {
       ...req.body.journal,
     });
     req.flash("success", "Successfully updated journal");

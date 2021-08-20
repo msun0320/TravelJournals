@@ -5,7 +5,7 @@
   <p><small><%= journal.author.username %></small></p>
   <p><small><%= journal.date %></small></p>
   <p class="mt-5"><%= journal.text %></p>
-  <% if (currentUser && journal.author.equals(currentUser)) {%>
+  <% if (currentUser && journal.author.equals(currentUser._id)) {%>
   <a class="btn btn-primary" href="/journals/<%= journal._id %>/edit">Edit</a>
   <form
     class="d-inline"
