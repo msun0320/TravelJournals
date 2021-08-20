@@ -1,6 +1,8 @@
 <% layout('layouts/boilerplate') %>
 <div class="mb-3">
-  <img src="<%= journal.image %>" class="img-fluid" alt="" />
+  <% for (let img of journal.images) { %>
+  <img src="<%= img.url %>" class="img-fluid" alt="" />
+  <% } %>
   <h1 class="mt-5"><%= journal.title %></h1>
   <p><small><%= journal.author.username %></small></p>
   <p><small><%= journal.date %></small></p>

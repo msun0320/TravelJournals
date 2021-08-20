@@ -12,11 +12,12 @@ const Journal = require("../models/journal");
 router
   .route("/")
   .get(catchAsync(journals.index))
-  // .post(isLoggedIn, validateJournal, catchAsync(journals.createJournal));
-  .post(upload.array("image"), (req, res) => {
-    console.log(req.body, req.files);
-    res.send("It worked");
-  });
+  .post(
+    isLoggedIn,
+    upload.array("image"),
+    validateJournal,
+    catchAsync(journals.createJournal)
+  );
 
 router.get("/new", isLoggedIn, journals.renderNewForm);
 

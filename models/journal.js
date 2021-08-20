@@ -4,7 +4,12 @@ const Schema = mongoose.Schema;
 
 const JournalSchema = new Schema({
   title: String,
-  image: String,
+  images: [
+    {
+      url: String,
+      filename: String,
+    },
+  ],
   location: String,
   date: Date,
   text: String,

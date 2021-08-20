@@ -11,6 +11,10 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createJournal = async (req, res, next) => {
   const journal = new Journal(req.body.journal);
+  journal.images = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
   journal.author = req.user._id;
   await journal.save();
   req.flash("success", "Successfully added a new journal");
