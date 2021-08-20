@@ -1,36 +1,40 @@
 <% layout('layouts/boilerplate') %>
+<div id="map" style="width: 100%; height: 500px"></div>
 <h1>All journals!</h1>
 <div>
   <a href="/journals/new">Add Journal</a>
 </div>
-<ul>
-  <% for (let journal of journals) {%>
-  <div class="card" mb-3>
-    <div class="row">
-      <div class="col-md-4">
-        <% if (journal.images.length) { %>
-        <img src="<%= journal.images[0].url %>" alt="" class="img-fluid" />
-        <% } else { %>
-        <img
-          src="https://res.cloudinary.com/dxcl5mpau/image/upload/v1629462463/TravelJournals/k0lmajp57h0weihfqxkk.jpg"
-          alt=""
-          class="img-fluid"
-        />
-        <% } %>
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title"><%= journal.title %></h5>
-          <p class="card-text"><%= journal.text %></p>
-          <p class="card-text">
-            <small class="text-muted"><%= journal.location %> </small>
-          </p>
-          <a class="btn btn-primary" href="/journals/<%= journal._id %> "
-            >View <%= journal.title %>
-          </a>
-        </div>
+<% for (let journal of journals) {%>
+<div class="card" mb-3>
+  <div class="row">
+    <div class="col-md-4">
+      <% if (journal.images.length) { %>
+      <img src="<%= journal.images[0].url %>" alt="" class="img-fluid" />
+      <% } else { %>
+      <img
+        src="https://res.cloudinary.com/dxcl5mpau/image/upload/v1629462463/TravelJournals/k0lmajp57h0weihfqxkk.jpg"
+        alt=""
+        class="img-fluid"
+      />
+      <% } %>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%= journal.title %></h5>
+        <p class="card-text"><%= journal.text %></p>
+        <p class="card-text">
+          <small class="text-muted"><%= journal.location %> </small>
+        </p>
+        <a class="btn btn-primary" href="/journals/<%= journal._id %> "
+          >View <%= journal.title %>
+        </a>
       </div>
     </div>
   </div>
-  <% }%>
-</ul>
+</div>
+<% }%>
+<script>
+  const mapToken = "<%- process.env.MAPBOX_TOKEN %>";
+</script>
+
+<script src="/javascripts/clusterMap.js"></script>
