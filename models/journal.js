@@ -13,6 +13,17 @@ ImageSchema.virtual("thumbnail").get(function () {
 const JournalSchema = new Schema({
   title: String,
   images: [ImageSchema],
+  geometry: {
+    type: {
+      type: String,
+      enums: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
   location: String,
   date: Date,
   text: String,

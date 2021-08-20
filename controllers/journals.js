@@ -20,17 +20,17 @@ module.exports.createJournal = async (req, res, next) => {
       limit: 1,
     })
     .send();
-  console.log(geoData.body.features[0].geometry.coordinates);
-  res.send("ok");
-  // const journal = new Journal(req.body.journal);
-  // journal.images = req.files.map((f) => ({
-  //   url: f.path,
-  //   filename: f.filename,
-  // }));
-  // journal.author = req.user._id;
-  // await journal.save();
-  // req.flash("success", "Successfully added a new journal");
-  // res.redirect(`/journals/${journal._id}`);
+  const journal = new Journal(req.body.journal);
+  journal.geometry = geoData.body.features[0].geometry;
+  journal.images = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
+  journal.author = req.user._id;
+  await journal.save();
+  console.log(journal);
+  req.flash("success", "Successfully added a new journal");
+  res.redirect(`/journals/${journal._id}`);
 };
 
 module.exports.showJournal = async (req, res) => {
