@@ -5,7 +5,7 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
-  const journals = await Journal.find({});
+  const journals = await Journal.find({}).populate("author");
   res.render("journals/index", { journals });
 };
 
