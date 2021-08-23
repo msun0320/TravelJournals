@@ -1,6 +1,5 @@
 <% layout('layouts/boilerplate') %>
 <div class="mb-3">
-  <div id="map"></div>
   <div id="journalCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <% journal.images.forEach((img, i) => {%>
@@ -32,8 +31,9 @@
   </div>
   <h1 class="mt-5"><%= journal.title %></h1>
   <p><small><%= journal.author.username %></small></p>
-  <p><small><%= journal.date %></small></p>
+  <p><small><%= journal.date.toLocaleDateString() %></small></p>
   <p class="mt-5"><%= journal.text %></p>
+  <div id="map" class="mb-3"></div>
   <% if (currentUser && journal.author.equals(currentUser._id)) {%>
   <a class="btn btn-primary" href="/journals/<%= journal._id %>/edit">Edit</a>
   <form
@@ -53,7 +53,7 @@
   class="mb-3 validated-form"
   novalidate
 >
-  <div>
+  <div class="mb-3">
     <label class="form-label" for="body">Comment</label>
     <textarea
       class="form-control"
