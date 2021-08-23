@@ -26,7 +26,7 @@ module.exports.isAuthor = async (req, res, next) => {
   const { id } = req.params;
   const journal = await Journal.findById(id);
   if (!journal.author.equals(req.user._id)) {
-    req.flash("error", "You do not have permission to do that!");
+    req.flash("error", "You do not have permission to do that");
     return res.redirect(`/journals/${id}`);
   }
   next();
@@ -55,7 +55,7 @@ module.exports.validateComment = (req, res, next) => {
 module.exports.isUser = (req, res, next) => {
   const { username } = req.params;
   if (req.user.username !== username) {
-    req.flash("error", "You do not have permission to do that!");
+    req.flash("error", "You do not have permission to do that!!");
     return res.redirect("/journals");
   }
   next();
@@ -65,7 +65,7 @@ module.exports.hasPermissionToView = async (req, res, next) => {
   const { id } = req.params;
   const journal = await Journal.findById(id);
   if (!journal.public && !journal.author.equals(req.user._id)) {
-    req.flash("error", "You do not have permission to do that!");
+    req.flash("error", "You do not have permission to do that!!!");
     return res.redirect("/journals");
   }
   next();
