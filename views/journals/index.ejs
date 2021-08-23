@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate') %>
 <div id="cluster-map"></div>
-<h1>All journals!</h1>
-<div>
-  <a href="/journals/new">Add Journal</a>
+<div class="my-5 text-center">
+  <h1>All journals!</h1>
+  <a class="btn btn-primary" href="/journals/new">Add Journal</a>
 </div>
 <% for (let journal of journals) {%>
 <div class="card mb-3">
@@ -21,7 +21,10 @@
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title"><%= journal.title %></h5>
-        <p class="card-text"><%= journal.text %></p>
+        <p class="card-text">
+          <small class="text-muted">By: <%= journal.author.username %> </small>
+        </p>
+        <p class="card-text"><%= journal.text.substring(0, 300) %>...</p>
         <p class="card-text">
           <small class="text-muted"><%= journal.location %> </small>
         </p>

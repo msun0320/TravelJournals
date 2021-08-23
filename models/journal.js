@@ -48,9 +48,7 @@ const JournalSchema = new Schema(
 
 JournalSchema.virtual("properties.popUpMarkup").get(function () {
   return `
-  <strong><a href="/journals/${
-    this._id
-  }">${this.title.substring(0, 20)}...</a></strong>
+  <strong><a href="/journals/${this._id}">${this.title}</a></strong>
   <p>${this.location}</p>`;
 });
 
