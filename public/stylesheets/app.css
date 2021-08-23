@@ -16,7 +16,7 @@ main {
   max-height: 70vh;
 }
 
-@media (min-width: 320px) {
+@media (min-width: 425px) {
   #cluster-map {
     height: 500px;
   }
