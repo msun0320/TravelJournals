@@ -20,9 +20,11 @@ const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/users");
 const journalRoutes = require("./routes/journals");
 const commentRoutes = require("./routes/comments");
-// const dbUrl = process.env.DB_URL;
-// ("mongodb://localhost:27017/travel-journal");
-mongoose.connect("mongodb://localhost:27017/travel-journal", {
+
+const MongoDBStore = require("connect-mongo");
+
+const dbUrl = "mongodb://localhost:27017/travel-journal";
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -50,7 +52,18 @@ app.use(
   })
 );
 
+const store = MongoDBStore.create({
+  mongoUrl: dbUrl,
+  secret: "secretplaceholder",
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
+
 const sessionConfig = {
+  store,
   name: "session",
   secret: "secretplaceholder",
   resave: false,
