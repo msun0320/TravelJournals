@@ -39,7 +39,7 @@ module.exports.logout = (req, res) => {
 };
 
 module.exports.showMyJournals = async (req, res) => {
-  const { username } = req.params;
+  const { username } = req.user;
   const user = await User.find({ username });
   const journals = await Journal.find({ author: user });
   res.render("users/index", { journals });

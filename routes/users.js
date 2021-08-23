@@ -24,6 +24,6 @@ router
 
 router.get("/logout", users.logout);
 
-router.get("/:username", isLoggedIn, isUser, users.showMyJournals);
+router.get("/myjournals", isLoggedIn, users.showMyJournals);
 
 module.exports = router;

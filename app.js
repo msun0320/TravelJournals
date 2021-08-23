@@ -145,9 +145,9 @@ app.get("/fakeUser", async (req, res) => {
   res.send(newUser);
 });
 
+app.use("/", userRoutes);
 app.use("/journals", journalRoutes);
 app.use("/journals/:id/comments", commentRoutes);
-app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");
