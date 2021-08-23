@@ -20,7 +20,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/users");
 const journalRoutes = require("./routes/journals");
 const commentRoutes = require("./routes/comments");
-
+// const dbUrl = process.env.DB_URL;
+// ("mongodb://localhost:27017/travel-journal");
 mongoose.connect("mongodb://localhost:27017/travel-journal", {
   useNewUrlParser: true,
   useCreateIndex: true,
