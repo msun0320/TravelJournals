@@ -60,6 +60,12 @@ module.exports.renderEditForm = async (req, res) => {
 };
 
 module.exports.updateJournal = async (req, res) => {
+  const geoData = await geocoder
+    .forwardGeocode({
+      query: req.body.journal.location,
+      limit: 1,
+    })
+    .send();
   const { id } = req.params;
   const journal = await Journal.findByIdAndUpdate(id, {
     ...req.body.journal,
@@ -68,6 +74,7 @@ module.exports.updateJournal = async (req, res) => {
     url: f.path,
     filename: f.filename,
   }));
+  journal.geometry = geoData.body.features[0].geometry;
   journal.images.push(...imgs);
   await journal.save();
   if (req.body.deleteImages) {
