@@ -1,93 +1,97 @@
 <% layout('layouts/boilerplate') %>
-<div class="w-50 mx-auto">
-  <div class="mb-3">
-    <div id="journalCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <% journal.images.forEach((img, i) => {%>
-        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-          <img src="<%= img.url %> " class="d-block w-100" alt="" />
-        </div>
-        <% }) %>
-      </div>
-      <% if (journal.images.length > 1) { %>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#journalCarousel"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#journalCarousel"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-      <% } %>
-    </div>
-    <h1 class="mt-5">
-      <%= journal.title %><% if (!journal.public) { %>
-      <span class="badge rounded-pill bg-light text-dark">Private</span>
-      <% } %>
-    </h1>
-    <p><small><%= journal.author.username %></small></p>
-    <p><small><%= journal.date.toLocaleDateString() %></small></p>
-    <p class="mt-5"><%= journal.text %></p>
-    <div id="map" class="mb-3"></div>
-    <% if (currentUser && journal.author.equals(currentUser._id)) {%>
-    <a class="btn btn-primary" href="/journals/<%= journal._id %>/edit">Edit</a>
-    <form
-      class="d-inline"
-      action="/journals/<%= journal._id %>?_method=DELETE"
-      method="POST"
-    >
-      <button class="btn btn-danger">Delete</button>
-    </form>
-    <% } %>
-  </div>
-  <% if (currentUser) { %>
-  <h2>Leave a Comment</h2>
-  <form
-    action="/journals/<%= journal._id %>/comments"
-    method="POST"
-    class="mb-3 validated-form"
-    novalidate
-  >
+<div class="row">
+  <div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
     <div class="mb-3">
-      <label class="form-label" for="body">Comment</label>
-      <textarea
-        class="form-control"
-        name="comment[body]"
-        id="body"
-        cols="30"
-        rows="3"
-        required
-      ></textarea>
-      <div class="valid-feedback">Looks good!</div>
-    </div>
-    <button class="btn btn-success">Submit</button>
-  </form>
-  <% } %> <% for (let comment of journal.comments) { %>
-  <div class="mb-3 card">
-    <div class="card-body">
-      <h5 class="card-title">By <%= comment.author.username %></h5>
-      <p class="card-text"><%= comment.body %></p>
-      <% if (currentUser && comment.author.equals(currentUser._id)) {%>
+      <div id="journalCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <% journal.images.forEach((img, i) => {%>
+          <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+            <img src="<%= img.url %> " class="d-block w-100" alt="" />
+          </div>
+          <% }) %>
+        </div>
+        <% if (journal.images.length > 1) { %>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#journalCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#journalCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        <% } %>
+      </div>
+      <h1 class="mt-5">
+        <%= journal.title %><% if (!journal.public) { %>
+        <span class="badge rounded-pill bg-light text-dark">Private</span>
+        <% } %>
+      </h1>
+      <p><small><%= journal.author.username %></small></p>
+      <p><small><%= journal.date.toLocaleDateString() %></small></p>
+      <p class="mt-5"><%= journal.text %></p>
+      <div id="map" class="mb-3"></div>
+      <% if (currentUser && journal.author.equals(currentUser._id)) {%>
+      <a class="btn btn-primary" href="/journals/<%= journal._id %>/edit"
+        >Edit</a
+      >
       <form
-        action="/journals/<%= journal._id %>/comments/<%= comment._id %>?_method=DELETE"
+        class="d-inline"
+        action="/journals/<%= journal._id %>?_method=DELETE"
         method="POST"
       >
-        <button class="btn btn-sm btn-danger">Delete</button>
+        <button class="btn btn-danger">Delete</button>
       </form>
       <% } %>
     </div>
+    <% if (currentUser) { %>
+    <h2>Leave a Comment</h2>
+    <form
+      action="/journals/<%= journal._id %>/comments"
+      method="POST"
+      class="mb-3 validated-form"
+      novalidate
+    >
+      <div class="mb-3">
+        <label class="form-label" for="body">Comment</label>
+        <textarea
+          class="form-control"
+          name="comment[body]"
+          id="body"
+          cols="30"
+          rows="3"
+          required
+        ></textarea>
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <button class="btn btn-success">Submit</button>
+    </form>
+    <% } %> <% for (let comment of journal.comments) { %>
+    <div class="mb-3 card">
+      <div class="card-body">
+        <h5 class="card-title">By <%= comment.author.username %></h5>
+        <p class="card-text"><%= comment.body %></p>
+        <% if (currentUser && comment.author.equals(currentUser._id)) {%>
+        <form
+          action="/journals/<%= journal._id %>/comments/<%= comment._id %>?_method=DELETE"
+          method="POST"
+        >
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
   </div>
-  <% } %>
 </div>
 
 <script>
