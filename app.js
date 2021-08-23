@@ -23,7 +23,7 @@ const commentRoutes = require("./routes/comments");
 
 const MongoDBStore = require("connect-mongo");
 
-const dbUrl = "mongodb://localhost:27017/travel-journal";
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/travel-journal";
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -52,9 +52,11 @@ app.use(
   })
 );
 
+const secret = process.env.SECRET || "secretplaceholder";
+
 const store = MongoDBStore.create({
   mongoUrl: dbUrl,
-  secret: "secretplaceholder",
+  secret,
   touchAfter: 24 * 60 * 60,
 });
 
@@ -65,7 +67,7 @@ store.on("error", function (e) {
 const sessionConfig = {
   store,
   name: "session",
-  secret: "secretplaceholder",
+  secret,
   resave: false,
   saveUninitialized: false,
   cookie: {
