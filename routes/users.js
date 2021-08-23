@@ -4,6 +4,7 @@ const passport = require("passport");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const users = require("../controllers/users");
+const { isLoggedIn, isUser } = require("../middleware");
 
 router
   .route("/register")
@@ -22,5 +23,7 @@ router
   );
 
 router.get("/logout", users.logout);
+
+router.get("/:username", isLoggedIn, isUser, users.showMyJournals);
 
 module.exports = router;

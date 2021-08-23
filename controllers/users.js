@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Journal = require("../models/journal");
 
 module.exports.renderRegister = (req, res) => {
   res.render("users/register");
@@ -35,4 +36,11 @@ module.exports.logout = (req, res) => {
   req.logout();
   req.flash("success", "Goodbye");
   res.redirect("/journals");
+};
+
+module.exports.showMyJournals = async (req, res) => {
+  const { username } = req.params;
+  const user = await User.find({ username });
+  const journals = await Journal.find({ author: user });
+  res.render("users/index", { journals });
 };

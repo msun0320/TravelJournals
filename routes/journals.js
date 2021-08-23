@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const journals = require("../controllers/journals");
 const catchAsync = require("../utils/catchAsync");
-const { isLoggedIn, isAuthor, validateJournal } = require("../middleware");
+const {
+  isLoggedIn,
+  isAuthor,
+  validateJournal,
+  hasPermissionToView,
+} = require("../middleware");
 const multer = require("multer");
 const { storage } = require("../cloudinary");
 const upload = multer({ storage });
@@ -23,7 +28,7 @@ router.get("/new", isLoggedIn, journals.renderNewForm);
 
 router
   .route("/:id")
-  .get(catchAsync(journals.showJournal))
+  .get(hasPermissionToView, catchAsync(journals.showJournal))
   .put(
     isLoggedIn,
     isAuthor,

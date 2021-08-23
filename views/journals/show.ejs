@@ -29,7 +29,11 @@
     </button>
     <% } %>
   </div>
-  <h1 class="mt-5"><%= journal.title %></h1>
+  <h1 class="mt-5">
+    <%= journal.title %><% if (!journal.public) { %>
+    <span class="badge rounded-pill bg-light text-dark">Private</span>
+    <% } %>
+  </h1>
   <p><small><%= journal.author.username %></small></p>
   <p><small><%= journal.date.toLocaleDateString() %></small></p>
   <p class="mt-5"><%= journal.text %></p>
