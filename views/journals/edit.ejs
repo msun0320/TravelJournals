@@ -40,7 +40,7 @@
           type="date"
           id="date"
           name="journal[date]"
-          value="<%= journal.date %> "
+          value="<%= journal.date.toISOString().substring(0,10) %>"
           required
         />
         <div class="valid-feedback">Looks good!</div>
