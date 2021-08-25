@@ -4,11 +4,7 @@ A full-stack web application allowing users to write travel journals and share t
 
 ## Built with
 
-- HTML
-- CSS
-- Bootstrap
-- JavaScript
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
+- HTML / EJS
+- CSS / Bootstrap
+- JavaScript / Node.js / Express.js
+- MongoDB / Mongoose
